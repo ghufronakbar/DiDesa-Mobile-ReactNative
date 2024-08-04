@@ -1,12 +1,11 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Text, View } from "react-native";
-import { getProfile } from "Services/homepage";
+import { getInfo, getProfile } from "Services/homepage";
 import textStyles from "Styles/textStyles";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useFocusEffect } from "@react-navigation/native";
 
-const WelcomeMessage = () => {
-  
-  const [name, setName] = useState<string>("Untuk Kamu");
+const WelcomeMessage = () => {  
+  const [name, setName] = useState<string>("");
   const date = new Date();
   const hours = date.getHours();
   let time = "";
@@ -21,24 +20,27 @@ const WelcomeMessage = () => {
   }
   const fetchData = async () => {
     try {
-      const response = await getProfile();
-      if (response.isLoggedIn === true) {
-        setName(response.data.namaLengkap);
-      }      
-    } catch (error) {
-            
-    }
+      const { isLoggedIn, name } = await getInfo()
+      setName(name||"Guest");
+      return { isLoggedIn, name };
+    } catch (error) {}
   };
+  
 
-  useEffect(() => {
-    fetchData();    
+  useFocusEffect(
+    useCallback(() => {
+      fetchData();
+    }, [])
+  );
+
+  useEffect(() => {    
+    console.log(name);
   }, []);
 
   return (
     <View style={{ gap: 4 }}>
       <Text style={textStyles.heading}>Selamat {time},</Text>
-      <Text style={textStyles.heading}>{name}</Text>
-      {/* <Text>{token}</Text> */}
+      <Text style={textStyles.heading}>{name }</Text>
     </View>
   );
 };

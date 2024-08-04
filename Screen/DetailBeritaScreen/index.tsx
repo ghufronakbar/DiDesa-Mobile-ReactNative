@@ -162,6 +162,7 @@ const DetailBeritaScreen = ({ route }: any): JSX.Element => {
                 >
                   {data.isi}
                 </Text>
+
                 <Text
                   style={{
                     color: "gray",
@@ -174,6 +175,7 @@ const DetailBeritaScreen = ({ route }: any): JSX.Element => {
                 >
                   {showAll ? "Tampilkan Lebih Sedikit" : "Tampilkan Semua"}
                 </Text>
+
                 <Text
                   style={[textStyles.heading, { marginTop: 16, fontSize: 18 }]}
                 >

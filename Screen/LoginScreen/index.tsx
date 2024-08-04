@@ -37,6 +37,7 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
     setIsLoading(true);
     try {
       const response = await login(nik, password);
+      console.log(response);
       setIsLoading(false);
       setIsError(false);
       setIsToastOpen(true);
@@ -44,6 +45,8 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
       await AsyncStorage.setItem("token", response.token);
       navigation.navigate("Home");
     } catch (error) {
+      console.log("error");
+      console.log(error);
       const apiError = error as ApiError;      
       setIsLoading(false);
       setIsError(true);

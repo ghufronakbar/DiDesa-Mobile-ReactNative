@@ -50,7 +50,7 @@ const ListMenu = () => {
     );
   };
   
-  const menuStyles = StyleSheet.create({
+  export const menuStyles = StyleSheet.create({
     iconWrap: {
       width: 60,
       height: 60,
@@ -62,6 +62,7 @@ const ListMenu = () => {
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.25,
       shadowRadius: 3.84,
+      position: "relative",
     },
     wrapper: { gap: 12, flexDirection: "column", alignItems: "center", flex: 1 },
     menuName: {
@@ -69,6 +70,7 @@ const ListMenu = () => {
       color: color.tertiary,
       textAlign: "center",
     },
+    badges:{position: 'absolute', top: -5, right: -5, width: 18, height: 18, borderRadius: 18, backgroundColor: color.primary, justifyContent: 'center', alignItems: 'center'}
   });
 
   

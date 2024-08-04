@@ -11,6 +11,8 @@ import DetailUMKMScreen from "Screen/DetailUMKMScreen";
 import SpinnerLoading from "Components/SpinnerLoading";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
+import ProfileScreen from "Screen/ProfileScreen";
+import UMKMSayaScreen from "Screen/UMKMSayaScreen";
 
 
 const Stack = createNativeStackNavigator();
@@ -24,8 +26,10 @@ export default function App() {
           <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
           <Stack.Screen name="Berita" component={BeritaScreen} options={{ headerShown: false }} />
           <Stack.Screen name="UMKM" component={UMKMScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="UMKMSaya" component={UMKMSayaScreen} options={{ headerShown: false }} />
           <Stack.Screen name="DetailBerita" component={DetailBeritaScreen} options={{ headerShown: false }} />
           <Stack.Screen name="DetailUMKM" component={DetailUMKMScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     

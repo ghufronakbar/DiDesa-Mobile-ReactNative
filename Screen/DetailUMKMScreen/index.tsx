@@ -16,12 +16,15 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Entypo from "react-native-vector-icons/Entypo";
-import { getDetailUMKM } from "Services/umkm";
+import { getDetailUMKM, setStatusUMKM } from "Services/umkm";
 import SpinnerLoading from "Components/SpinnerLoading";
+import ToastNotification from "Components/ToastNotification";
 
 const DetailUMKMScreen = ({ route }: any) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [data, setData] = useState<any>();
+  const [isPublic, setIsPublic] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>("");
 
   const { umkmId } = route.params;
 
@@ -32,6 +35,20 @@ const DetailUMKMScreen = ({ route }: any) => {
     setIsLoading(false);
   };
 
+  const handleSetStatus = async (status: boolean) => {
+    setIsLoading(true);
+    try {
+      const response = await setStatusUMKM(umkmId, status);      
+      setMessage(response.message);
+      setIsLoading(false);
+      fetchData();
+      setIsPublic(true);
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);            
+    }
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -40,6 +57,8 @@ const DetailUMKMScreen = ({ route }: any) => {
     <SafeAreaView
       style={{ flex: 1, minHeight: Dimensions.get("window").height }}
     >
+      {isPublic && <ToastNotification message={message} status="info" onClose={() => setIsPublic(false)}/>}
+        
       <View
         style={{
           backgroundColor: color.white,
@@ -64,13 +83,14 @@ const DetailUMKMScreen = ({ route }: any) => {
             <MaterialCommunityIcons
               name="square-edit-outline"
               size={24}
-              color="black"
+              color="black"              
             />
             {data && data.approve === true ? (
               <MaterialIcons
                 name={data.status === true ? "public" : "public-off"}
                 size={24}
                 color="black"
+                onPress={() => handleSetStatus(!data.status)}
               />
             ) : null}
           </View>

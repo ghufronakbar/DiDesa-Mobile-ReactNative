@@ -14,4 +14,11 @@ const getDetailUMKM = async (umkmId: string) => {
   return response.data;
 };
 
-export { getAllUMKM, getDetailUMKM };
+const setStatusUMKM = async (umkmId: string, status: boolean) => {
+  const response = await axiosInstance.put(`/umkm/status/${umkmId}`, {
+    status,
+  });
+  return response.data;
+};
+
+export { getAllUMKM, getDetailUMKM, setStatusUMKM };

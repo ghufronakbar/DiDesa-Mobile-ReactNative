@@ -1,24 +1,41 @@
+import { useFocusEffect } from "@react-navigation/native";
 import color from "Constants/Color";
 import DEFAULT_PROFILE from "Constants/DefaultProfile";
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { Dimensions, Image, Text, TouchableOpacity, View } from "react-native";
 import { getProfile } from "Services/homepage";
 import textStyles from "Styles/textStyles";
 
 const NavTop = ({ navigation }: { navigation: any }) => {
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const [data, setData] = useState<any>();
+  const [data, setData] = useState<any>(null);
+
   const fetchData = async () => {
+    setIsLoading(true);
     try {
       const response = await getProfile();
-      setData(response.data);
-      setIsLoggedIn(response.isLoggedIn);
-    } catch (error) {}
+      if (response) {
+        setData(response.data);
+        setIsLoggedIn(response.isLoggedIn);
+      }
+    } catch (error) {
+      setData(null);
+      setIsLoggedIn(false);      
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      console.log("useFocusEffect");
+      fetchData();
+      console.log("data", data);
+
+      return () => {};
+    }, [])
+  );
 
   return (
     <View
@@ -41,14 +58,18 @@ const NavTop = ({ navigation }: { navigation: any }) => {
         <Text style={textStyles.heading}>DiDesa</Text>
       </View>
       {isLoggedIn ? (
-        <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+        <TouchableOpacity
+          onPress={() => (isLoading ? null : navigation.navigate("Profile"))}
+        >
           <Image
-            source={{ uri: data.foto }}
+            source={{ uri: data?.foto || DEFAULT_PROFILE }}
             style={{ width: 40, height: 40, borderRadius: 50 }}
           />
         </TouchableOpacity>
       ) : (
-        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+        <TouchableOpacity
+          onPress={() => (isLoading ? null : navigation.navigate("Login"))}
+        >
           <Image
             source={{ uri: DEFAULT_PROFILE }}
             style={{ width: 40, height: 40, borderRadius: 50 }}
