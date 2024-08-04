@@ -36,10 +36,6 @@ const DetailUMKMScreen = ({ route }: any) => {
     fetchData();
   }, []);
 
-  if (isLoading) {
-    return <SpinnerLoading />;
-  }
-
   return (
     <SafeAreaView
       style={{ flex: 1, minHeight: Dimensions.get("window").height }}
@@ -63,14 +59,14 @@ const DetailUMKMScreen = ({ route }: any) => {
             <Text style={textStyles.heading}>Detail</Text>
           </View>
         </View>
-        {data.isEditable === true ? (
+        {data && data.isEditable === true ? (
           <View style={{ flexDirection: "row", alignItems: "center", gap: 16 }}>
             <MaterialCommunityIcons
               name="square-edit-outline"
               size={24}
               color="black"
             />
-            {data.approve === true ? (
+            {data && data.approve === true ? (
               <MaterialIcons
                 name={data.status === true ? "public" : "public-off"}
                 size={24}
@@ -80,75 +76,90 @@ const DetailUMKMScreen = ({ route }: any) => {
           </View>
         ) : null}
       </View>
+      {isLoading && <SpinnerLoading />}
       <FlatList
         data={[]}
         renderItem={() => null}
         ListHeaderComponent={() => (
-          <View style={{ gap: 8, minHeight: Dimensions.get("window").height }}>
-            <View style={{ flexDirection: "column", gap: 16, width: "100%" }}>
-              <Text style={textStyles.heading}>{data.nama}</Text>
+          <>
+            {data && (
               <View
-                style={{
-                  backgroundColor: color.primary,
-                  paddingVertical: 4,
-                  paddingHorizontal: 8,
-                  alignSelf: "flex-start",
-                  borderRadius: 12,
-                }}
+                style={{ gap: 8, minHeight: Dimensions.get("window").height }}
               >
-                <Text style={{ color: color.white, fontSize: 15 }}>
-                  {data.jenisUmkm.namaJenisUmkm}
-                </Text>
-              </View>
-            </View>
-            <Image
-              source={{ uri: data.gambar }}
-              style={{ width: "100%", height: 200, marginTop: 16 }}
-            />
-            <Text
-              style={[
-                textStyles.content,
-                { textAlign: "justify", color: color.black, marginTop: 16 },
-              ]}
-            >
-              {data.deskripsi}
-            </Text>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                gap: 16,
-                marginTop: 16,
-                borderColor: color.primary,
-                borderWidth: 1,
-                borderRadius: 12,
-                padding: 8,
-              }}
-            >
-              <Image
-                source={{ uri: data.warga.foto }}
-                style={{ width: 50, height: 50, borderRadius: 25 }}
-              />
-              <View style={{ flexDirection: "column", gap: 2 }}>
-                <Text style={textStyles.subHeading}>
-                  {data.warga.namaLengkap}
-                </Text>
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <Entypo name="location-pin" size={20} color={color.primary} />
-                  <Text
+                <View
+                  style={{ flexDirection: "column", gap: 16, width: "100%" }}
+                >
+                  <Text style={textStyles.heading}>{data.nama}</Text>
+                  <View
                     style={{
-                      fontSize: 16,
-                      fontWeight: "400",
-                      color: color.tertiary,
+                      backgroundColor: color.primary,
+                      paddingVertical: 4,
+                      paddingHorizontal: 8,
+                      alignSelf: "flex-start",
+                      borderRadius: 12,
                     }}
                   >
-                    {" "}
-                    {data.lokasi}
-                  </Text>
+                    <Text style={{ color: color.white, fontSize: 15 }}>
+                      {data.jenisUmkm.namaJenisUmkm}
+                    </Text>
+                  </View>
+                </View>
+                <Image
+                  source={{ uri: data.gambar }}
+                  style={{ width: "100%", height: 200, marginTop: 16 }}
+                />
+                <Text
+                  style={[
+                    textStyles.content,
+                    { textAlign: "justify", color: color.black, marginTop: 16 },
+                  ]}
+                >
+                  {data.deskripsi}
+                </Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    gap: 16,
+                    marginTop: 16,
+                    borderColor: color.primary,
+                    borderWidth: 1,
+                    borderRadius: 12,
+                    padding: 8,
+                  }}
+                >
+                  <Image
+                    source={{ uri: data.warga.foto }}
+                    style={{ width: 50, height: 50, borderRadius: 25 }}
+                  />
+                  <View style={{ flexDirection: "column", gap: 2 }}>
+                    <Text style={textStyles.subHeading}>
+                      {data.warga.namaLengkap}
+                    </Text>
+                    <View
+                      style={{ flexDirection: "row", alignItems: "center" }}
+                    >
+                      <Entypo
+                        name="location-pin"
+                        size={20}
+                        color={color.primary}
+                      />
+                      <Text
+                        style={{
+                          fontSize: 16,
+                          fontWeight: "400",
+                          color: color.tertiary,
+                        }}
+                      >
+                        {" "}
+                        {data.lokasi}
+                      </Text>
+                    </View>
+                  </View>
                 </View>
               </View>
-            </View>
-          </View>
+            )}
+          </>
         )}
         keyExtractor={(item, index) => index.toString()}
         contentContainerStyle={containerStyles.container}
