@@ -28,11 +28,8 @@ const NavTop = ({ navigation }: { navigation: any }) => {
   };
 
   useFocusEffect(
-    useCallback(() => {
-      console.log("useFocusEffect");
-      fetchData();
-      console.log("data", data);
-
+    useCallback(() => {      
+      fetchData();      
       return () => {};
     }, [])
   );

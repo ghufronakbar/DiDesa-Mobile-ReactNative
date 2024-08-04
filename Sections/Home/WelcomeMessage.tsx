@@ -31,11 +31,7 @@ const WelcomeMessage = () => {
     useCallback(() => {
       fetchData();
     }, [])
-  );
-
-  useEffect(() => {    
-    console.log(name);
-  }, []);
+  );  
 
   return (
     <View style={{ gap: 4 }}>
