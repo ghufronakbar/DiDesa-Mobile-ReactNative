@@ -251,13 +251,11 @@ const ProfileScreen = ({ navigation }: { navigation: any }) => {
             <Text style={menuStyles.menuName}>Ganti Password</Text>
           </View>
           <View style={menuStyles.wrapper}>
-            <TouchableOpacity style={menuStyles.iconWrap}>
-              <Entypo
-                name="shop"
-                size={30}
-                color={color.primary}
-                onPress={() => navigation.navigate("UMKMSaya")}
-              />
+            <TouchableOpacity
+              style={menuStyles.iconWrap}
+              onPress={() => navigation.navigate("UMKMSaya")}              
+            >
+              <Entypo name="shop" size={30} color={color.primary} />
               <View style={menuStyles.badges}>
                 <Text style={{ color: color.white, fontWeight: "700" }}>
                   {data._count.umkm}
@@ -267,7 +265,8 @@ const ProfileScreen = ({ navigation }: { navigation: any }) => {
             <Text style={menuStyles.menuName}>UMKM Saya</Text>
           </View>
           <View style={menuStyles.wrapper}>
-            <View style={menuStyles.iconWrap}>
+            <TouchableOpacity style={menuStyles.iconWrap}
+              onPress={() => navigation.navigate("RiwayatPengaduan")}>
               <Ionicons
                 name="document-text-outline"
                 size={30}
@@ -278,7 +277,7 @@ const ProfileScreen = ({ navigation }: { navigation: any }) => {
                   {data._count.pengaduanMasyarakat}
                 </Text>
               </View>
-            </View>
+            </TouchableOpacity>
             <Text style={menuStyles.menuName}>Riwayat Pengaduan</Text>
           </View>
           <View style={menuStyles.wrapper}>

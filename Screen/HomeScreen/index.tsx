@@ -19,7 +19,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
           <View style={{ gap: 24 }}>
             <WelcomeMessage />
             <BeritaPrioritas navigation={navigation} />
-            <ListMenu />
+            <ListMenu navigation={navigation} />
             <ListUMKM navigation={navigation} />
             <ListBerita navigation={navigation} />
           </View>

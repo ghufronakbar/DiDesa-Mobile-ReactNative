@@ -1,5 +1,5 @@
 import color from "Constants/Color";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Dimensions,
   FlatList,
@@ -9,10 +9,11 @@ import {
   View,
 } from "react-native";
 import textStyles from "Styles/textStyles";
-import Ionicons from "react-native-vector-icons/Ionicons";
 import RenderCardUMKM from "Components/RenderCardUMKM";
 import { getAllUMKM } from "Services/umkm";
 import RenderSkeletonCard from "Components/RenderSkeletonCard";
+import BackButton from "Components/BackButton";
+import { useFocusEffect } from "@react-navigation/native";
 
 const UMKMScreen = ({ navigation }: { navigation: any }) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -30,9 +31,12 @@ const UMKMScreen = ({ navigation }: { navigation: any }) => {
     setIsLoading(false);
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchData();
+      return () => {};
+    }, [])
+  );
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -48,7 +52,7 @@ const UMKMScreen = ({ navigation }: { navigation: any }) => {
           elevation: 5,
         }}
       >
-        <Ionicons name="chevron-back-sharp" size={24} color={color.black} />
+        <BackButton navigation={navigation} />
         <View style={{ flexDirection: "row", alignItems: "center", gap: 16 }}>
           <Text style={textStyles.heading}>UMKM</Text>
         </View>

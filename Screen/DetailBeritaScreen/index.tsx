@@ -12,7 +12,6 @@ import {
   View,
 } from "react-native";
 import textStyles from "Styles/textStyles";
-import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import formatDate from "utils/formatDate";
 import inputStyles from "Styles/inputStyles";
@@ -23,12 +22,13 @@ import {
 } from "Services/berita";
 import SpinnerLoading from "Components/SpinnerLoading";
 import { Komentar } from "Models/Komentar";
-import { Berita } from "Models/Berita";
 import ToastNotification from "Components/ToastNotification";
 import { ApiError } from "Models/ApiError";
 import ModalConfirmation from "Components/ModalConfirmation";
+import detailStyles from "Styles/detailStyles";
+import BackButton from "Components/BackButton";
 
-const DetailBeritaScreen = ({ route }: any): JSX.Element => {
+const DetailBeritaScreen = ({ navigation, route }: any): JSX.Element => {
   const [showAll, setShowAll] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [data, setData] = useState<any>();
@@ -99,7 +99,7 @@ const DetailBeritaScreen = ({ route }: any): JSX.Element => {
     setShowAll(!showAll);
   };
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={detailStyles.container}>
       {isToastOpen && (
         <ToastNotification
           status={isError ? "error" : "info"}
@@ -108,21 +108,10 @@ const DetailBeritaScreen = ({ route }: any): JSX.Element => {
         />
       )}
 
-      <View
-        style={{
-          backgroundColor: color.white,
-          width: Dimensions.get("window").width,
-          height: 70,
-          paddingHorizontal: 16,
-          flexDirection: "row",
-          alignItems: "center",
-          gap: 16,
-          elevation: 5,
-        }}
-      >
-        <Ionicons name="chevron-back-sharp" size={24} color={color.black} />
-        <View style={{ flexDirection: "row", alignItems: "center", gap: 16 }}>
-          <Text style={textStyles.heading}>Detail</Text>
+      <View style={detailStyles.appBar}>
+        <BackButton navigation={navigation} />
+        <View style={detailStyles.wrapperHeader}>
+          <Text style={detailStyles.header}>Detail</Text>
         </View>
       </View>
       {isLoading && <SpinnerLoading />}

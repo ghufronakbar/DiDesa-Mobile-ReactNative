@@ -1,5 +1,5 @@
 import color from "Constants/Color";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Dimensions,
   FlatList,
@@ -9,11 +9,11 @@ import {
   View,
 } from "react-native";
 import textStyles from "Styles/textStyles";
-import Ionicons from "react-native-vector-icons/Ionicons";
 import RenderCardUMKM from "Components/RenderCardUMKM";
-import { getAllUMKM } from "Services/umkm";
 import RenderSkeletonCard from "Components/RenderSkeletonCard";
 import { getUmkmSaya } from "Services/profile";
+import BackButton from "Components/BackButton";
+import { useFocusEffect } from "@react-navigation/native";
 
 const UMKMSayaScreen = ({ navigation }: { navigation: any }) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -23,16 +23,20 @@ const UMKMSayaScreen = ({ navigation }: { navigation: any }) => {
     try {
       setIsLoading(true);
       const response = await getUmkmSaya();
-      setData(response.data);    
-      setIsLoading(false);      
+      setData(response.data);
+      setIsLoading(false);
     } catch (error) {
       navigation.navigate("Home");
     }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchData();
+      return () => {};
+    }, [])
+  );
+
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -48,7 +52,7 @@ const UMKMSayaScreen = ({ navigation }: { navigation: any }) => {
           elevation: 5,
         }}
       >
-        <Ionicons name="chevron-back-sharp" size={24} color={color.black} />
+        <BackButton navigation={navigation} />
         <View style={{ flexDirection: "row", alignItems: "center", gap: 16 }}>
           <Text style={textStyles.heading}>UMKM Saya</Text>
         </View>

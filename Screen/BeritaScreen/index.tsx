@@ -10,10 +10,10 @@ import {
 } from "react-native";
 import textStyles from "Styles/textStyles";
 import RenderCardBerita from "Components/RenderCardBerita";
-import Ionicons from "react-native-vector-icons/Ionicons";
 import { getAllBerita } from "Services/berita";
 import RenderSkeletonCard from "Components/RenderSkeletonCard";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import BackButton from "Components/BackButton";
 
 const BeritaScreen = ({ navigation }: { navigation: any }) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -36,7 +36,7 @@ const BeritaScreen = ({ navigation }: { navigation: any }) => {
     console.log(token);
     fetchData();
   }, []);
-  
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View
@@ -51,7 +51,7 @@ const BeritaScreen = ({ navigation }: { navigation: any }) => {
           elevation: 5,
         }}
       >
-        <Ionicons name="chevron-back-sharp" size={24} color={color.black} />
+        <BackButton navigation={navigation} />
         <View style={{ flexDirection: "row", alignItems: "center", gap: 16 }}>
           <Text style={textStyles.heading}>Berita</Text>
         </View>
