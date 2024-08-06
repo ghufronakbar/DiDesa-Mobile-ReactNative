@@ -5,6 +5,7 @@ import {
   SafeAreaView,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -20,6 +21,7 @@ import { menuStyles } from "Sections/Home/ListMenu";
 import Copyright from "Components/Copyright";
 import SpinnerLoading from "Components/SpinnerLoading";
 import {
+  changePassword,
   deleteImageProfile,
   editImageProfile,
   getProfile,
@@ -28,6 +30,9 @@ import {
 import ToastNotification from "Components/ToastNotification";
 import ModalActionImage from "Components/ModalActionImage";
 import compressImage from "utils/compressImage";
+import ModalChangePassword from "Components/ModalChangePassword";
+import inputStyles from "Styles/inputStyles";
+import { ApiError } from "Models/ApiError";
 
 const ProfileScreen = ({ navigation }: { navigation: any }) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -37,6 +42,20 @@ const ProfileScreen = ({ navigation }: { navigation: any }) => {
   const [isUploadImage, setIsUploadImage] = useState<boolean>(false);
   const [isUploadSuccess, setIsUploadSuccess] = useState<boolean>(false);
   const [messageUpload, setMessageUpload] = useState<string>("");
+  const [isChangePassword, setIsChangePassword] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>("");
+  const [isToastOpen, setIsToastOpen] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
+  interface Password {
+    old: string;
+    new: string;
+    confirm: string;
+  }
+  const [password, setPassword]= useState<Password>({
+    old: "",
+    new: "",
+    confirm: "",
+  });
 
   useEffect(() => {
     (async () => {
@@ -139,6 +158,25 @@ const ProfileScreen = ({ navigation }: { navigation: any }) => {
     }
   };
 
+  const handleChangePassword = async () => {
+    setIsLoading(true);
+    try {
+      const response = await changePassword(password.old, password.new, password.confirm);
+      setIsLoading(false);
+      setIsError(false);
+      setMessage(response.message);
+      setIsToastOpen(true);      
+      setIsChangePassword(false);
+    } catch (error) {
+      console.log(error);
+      const apiError = error as ApiError;      
+      setIsLoading(false);
+      setIsError(true);
+      setIsToastOpen(true);
+      setMessage(apiError?.response?.data?.message || "Gagal ganti password");
+    }
+  }
+
   if (isLoading) {
     return <SpinnerLoading />;
   }
@@ -159,7 +197,47 @@ const ProfileScreen = ({ navigation }: { navigation: any }) => {
           onClose={() => setIsUploadSuccess(false)}
         />
       )}
-
+      {isToastOpen && (
+        <ToastNotification message={message} onClose={() => setIsToastOpen(false)} status={isError ? "error" : "info"} />
+      )}
+      <ModalChangePassword  isVisible={isChangePassword} onClose={()=>{setIsChangePassword(false)}} onConfirm={handleChangePassword}>
+        <Text style={textStyles.heading}>Ganti Password</Text>
+      <View style={[inputStyles.inputContainer, {width: "100%", marginTop: 20}]}>
+          <Text style={inputStyles.label}>Password Lama</Text>
+          
+          <TextInput
+            style={inputStyles.input}
+            placeholder="Masukkan Password Lama"
+            placeholderTextColor={color.gray}   
+            secureTextEntry={true}              
+            value={password.old}
+            onChangeText={(text) => setPassword({...password, old: text})}                   
+          />          
+          
+        </View>
+      <View style={[inputStyles.inputContainer, {width: "100%"}]}>
+          <Text style={inputStyles.label}>Password Baru</Text>
+          <TextInput
+            style={inputStyles.input}
+            placeholder="Masukkan Password Baru"
+            placeholderTextColor={color.gray}   
+            secureTextEntry={true}                    
+            value={password.new}
+            onChangeText={(text) => setPassword({...password, new: text})}             
+          />
+        </View>
+      <View style={[inputStyles.inputContainer, {width: "100%"}]}>
+          <Text style={inputStyles.label}>Konfirmasi Password</Text>
+          <TextInput
+            style={inputStyles.input}
+            placeholder="Masukkan Konfirmasi Password"
+            placeholderTextColor={color.gray}   
+            secureTextEntry={true}                   
+            value={password.confirm}
+            onChangeText={(text) => setPassword({...password, confirm: text})}              
+          />
+        </View>
+      </ModalChangePassword>
       <ModalActionImage
         isVisible={isUploadImage}
         onClose={() => {
@@ -245,9 +323,9 @@ const ProfileScreen = ({ navigation }: { navigation: any }) => {
           }}
         >
           <View style={menuStyles.wrapper}>
-            <View style={menuStyles.iconWrap}>
+            <TouchableOpacity style={menuStyles.iconWrap} onPress={()=>{setIsChangePassword(true)}}>
               <MaterialIcons name="password" size={30} color={color.primary} />
-            </View>
+            </TouchableOpacity>
             <Text style={menuStyles.menuName}>Ganti Password</Text>
           </View>
           <View style={menuStyles.wrapper}>

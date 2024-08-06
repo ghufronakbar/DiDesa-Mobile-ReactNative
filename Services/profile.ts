@@ -39,10 +39,24 @@ const deleteImageProfile = async () => {
   return response.data;
 };
 
+const changePassword = async (
+  oldPassword: string,
+  newPassword: string,
+  confirmPassword: string
+) => {
+  const response = await axiosInstance.put("/account/reset-password", {
+    oldPassword,
+    newPassword,
+    confirmPassword,
+  });
+  return response.data;
+};
+
 export {
   logout,
   getProfile,
   getUmkmSaya,
   editImageProfile,
   deleteImageProfile,
+  changePassword,
 };
