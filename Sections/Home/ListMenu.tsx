@@ -15,10 +15,10 @@ const ListMenu = ({ navigation }: { navigation: any }) => {
       }}
     >
       <View style={menuStyles.wrapper}>
-        <View style={menuStyles.iconWrap}>
+        <TouchableOpacity style={menuStyles.iconWrap} onPress={() => navigation.navigate('InformasiDesa')}>
           <Entypo name="info" size={30} color={color.primary} />
-        </View>
-        <Text style={menuStyles.menuName}>Tentang Desa</Text>
+        </TouchableOpacity>
+        <Text style={menuStyles.menuName}>Informasi Desa</Text>
       </View>
       <View style={menuStyles.wrapper}>
         <TouchableOpacity style={menuStyles.iconWrap} onPress={() => navigation.navigate('PendaftaranUMKM')}>

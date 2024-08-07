@@ -26,8 +26,14 @@ const textStyles = StyleSheet.create({
     fontSize: 16,
     fontFamily: "Outfit-Regular",
     color: color.tertiary,
-    letterSpacing: 0.5,
-}
+    letterSpacing: 0.5,    
+},
+exponentText: {
+  fontSize: 10,
+  lineHeight: 16, // Adjust the lineHeight to position the exponent correctly
+  position: 'relative',
+  top: -10, // Adjust this value to move the exponent up or down
+},
 });
 
 export default textStyles;
