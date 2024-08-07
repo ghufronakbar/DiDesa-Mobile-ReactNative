@@ -30,7 +30,7 @@ const WelcomeMessage = () => {
   useFocusEffect(
     useCallback(() => {
       fetchData();
-    }, [])
+    }, [name])
   );  
 
   return (
