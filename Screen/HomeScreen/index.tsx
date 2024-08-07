@@ -1,14 +1,70 @@
 import color from "Constants/Color";
-import React from "react";
-import { FlatList, SafeAreaView, StyleSheet, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  Alert,
+  BackHandler,
+  Button,
+  FlatList,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import NavTop from "Components/NavTop";
 import BeritaPrioritas from "Sections/Home/BeritaPrioritas";
 import ListUMKM from "Sections/Home/ListUMKM";
 import ListBerita from "Sections/Home/ListBerita";
 import ListMenu from "Sections/Home/ListMenu";
 import WelcomeMessage from "Sections/Home/WelcomeMessage";
+import * as LocalAuthentication from "expo-local-authentication";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { logout } from "Services/profile";
 
 const HomeScreen = ({ navigation }: { navigation: any }) => {
+  const getIsLoggedIn = async () => {
+    const isLoggedIn = await AsyncStorage.getItem("isLoggedIn");
+    return isLoggedIn;
+  };
+
+  const handleBiometricAuth = async () => {
+    const compatible = await LocalAuthentication.hasHardwareAsync();
+    if (!compatible) {
+      return Alert.alert(
+        "Biometric not supported",
+        "Your device does not support biometric authentication."
+      );
+    }
+    const hasBiometrics = await LocalAuthentication.isEnrolledAsync();
+    if (!hasBiometrics) {
+      return Alert.alert(
+        "Biometric record not found",
+        "Please ensure you have set up biometrics in your device settings."
+      );
+    }
+
+    const result = await LocalAuthentication.authenticateAsync({
+      promptMessage: "Autentikasi",
+      fallbackLabel: "Masukkan kata sandi",
+    });    
+
+    if (result.success) {
+    } else {
+      await logout();
+      navigation.navigate("Login");
+      Alert.alert("Autentikasi Gagal", "Silahkan login kembali");
+    }
+  };
+
+  useEffect(() => {
+    getIsLoggedIn().then((value) => {
+      if (!value) {
+        logout().then(() => navigation.navigate("Login"));
+      } else {
+        handleBiometricAuth();
+      }
+    });
+  }, []);
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <NavTop navigation={navigation} />

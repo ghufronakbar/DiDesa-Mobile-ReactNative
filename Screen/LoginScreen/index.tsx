@@ -36,15 +36,17 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
     }
     setIsLoading(true);
     try {
-      const response = await login(nik, password);      
+      const response = await login(nik, password);
       setIsLoading(false);
       setIsError(false);
       setIsToastOpen(true);
       setMessage(response.message);
       await AsyncStorage.setItem("token", response.token);
-      navigation.navigate("Home");
-    } catch (error) {      
-      const apiError = error as ApiError;      
+      setTimeout(() => {
+        navigation.navigate("Home");
+      }, 2000);
+    } catch (error) {
+      const apiError = error as ApiError;
       setIsLoading(false);
       setIsError(true);
       setIsToastOpen(true);
@@ -54,8 +56,14 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
 
   return (
     <SafeAreaView style={containerStyles.container}>
-      {isToastOpen && <ToastNotification message={message} status={isError?"error":"info"} onClose={() => setIsToastOpen(false)}  />}
-        {isLoading && <SpinnerLoading />}
+      {isToastOpen && (
+        <ToastNotification
+          message={message}
+          status={isError ? "error" : "info"}
+          onClose={() => setIsToastOpen(false)}
+        />
+      )}
+      {isLoading && <SpinnerLoading />}
       <ScrollView style={{ alignSelf: "center", paddingTop: 100 }}>
         <View style={{ gap: 16, marginBottom: 68 }}>
           <Text style={textStyles.heading}>Selamat Datang ke</Text>
@@ -94,7 +102,7 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
             justifyContent: "flex-end",
             flexDirection: "row",
             gap: 10,
-            marginTop: 16,            
+            marginTop: 16,
           }}
         >
           <TouchableOpacity
@@ -120,7 +128,7 @@ const containerStyles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     padding: 16,
-    backgroundColor: color.white,    
+    backgroundColor: color.white,
     alignItems: "center",
   },
 });
