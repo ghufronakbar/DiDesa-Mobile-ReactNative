@@ -16,6 +16,7 @@ import EditUMKMScreen from "Screen/EditUMKMScreen";
 import PengaduanScreen from "Screen/PengaduanScreen";
 import InformasiDesaScreen from "Screen/InformasiDesaScreen";
 import SplashScreen from "Screen/SplashScreen";
+import PemilihanScreen from "Screen/PemilihanScreen";
 
 
 const Stack = createNativeStackNavigator();
@@ -40,6 +41,7 @@ export default function App() {
           <Stack.Screen name="DetailPengaduan" component={DetailPengaduanScreen} options={{ headerShown: false }} />
           <Stack.Screen name="InformasiDesa" component={InformasiDesaScreen} options={{ headerShown: false }} />
           <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="Pemilihan" component={PemilihanScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     

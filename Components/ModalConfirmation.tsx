@@ -1,3 +1,4 @@
+import color from "Constants/Color";
 import React from "react";
 import {
   View,
@@ -61,6 +62,7 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 10,
     alignItems: "center",
+    zIndex: 9999,
   },
   closeButton: {
     position: "absolute",
@@ -88,7 +90,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   confirmButton: {
-    backgroundColor: "red",
+    backgroundColor: color.primary,
   },
   cancelButton: {
     backgroundColor: "gray",

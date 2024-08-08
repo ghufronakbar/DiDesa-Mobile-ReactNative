@@ -4,11 +4,10 @@ import { StyleSheet } from "react-native";
 const buttonStyles = StyleSheet.create({
     primary: {
       backgroundColor: color.primary,
-      paddingVertical: 16,
+      padding: 16,
       borderRadius: 12,
       alignItems: "center",    
-      shadowColor: color.black,
-      paddingHorizontal: 16,
+      shadowColor: color.black,      
       shadowOffset: {
         width: 0,
         height: 2,
@@ -19,11 +18,10 @@ const buttonStyles = StyleSheet.create({
     primaryOutline: {
       backgroundColor: color.white,
       borderColor: color.primary,
-      paddingVertical: 16,
+      padding: 16,
       borderRadius: 12,
       borderWidth: 1,
-      alignItems: "center",
-      paddingHorizontal: 16,    
+      alignItems: "center",      
       shadowColor: color.black,
       shadowOffset: {
         width: 0,

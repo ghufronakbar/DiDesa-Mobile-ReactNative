@@ -37,13 +37,13 @@ const ListMenu = ({ navigation }: { navigation: any }) => {
         <Text style={menuStyles.menuName}>Pengaduan Masyarakat</Text>
       </View>
       <View style={menuStyles.wrapper}>
-        <View style={menuStyles.iconWrap}>
+        <TouchableOpacity style={menuStyles.iconWrap} onPress={() => navigation.navigate('Pemilihan')}>
           <MaterialCommunityIcons
             name="vote-outline"
             size={30}
             color={color.primary}
           />
-        </View>
+        </TouchableOpacity>
         <Text style={menuStyles.menuName}>Pemilihan Kepala Desa</Text>
       </View>
     </View>
