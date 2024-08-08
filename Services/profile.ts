@@ -52,6 +52,11 @@ const changePassword = async (
   return response.data;
 };
 
+const getLinkForgotPassword = async (nik:string) => {
+  const response = await axiosInstance.post("/account/forgot-password", {nik});
+  return response.data;
+};
+
 export {
   logout,
   getProfile,
@@ -59,4 +64,5 @@ export {
   editImageProfile,
   deleteImageProfile,
   changePassword,
+  getLinkForgotPassword,
 };

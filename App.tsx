@@ -17,6 +17,7 @@ import PengaduanScreen from "Screen/PengaduanScreen";
 import InformasiDesaScreen from "Screen/InformasiDesaScreen";
 import SplashScreen from "Screen/SplashScreen";
 import PemilihanScreen from "Screen/PemilihanScreen";
+import ForgotPasswordScreen from "Screen/ForgotPassword";
 
 
 const Stack = createNativeStackNavigator();
@@ -28,6 +29,7 @@ export default function App() {
         <Stack.Navigator initialRouteName="Splash">
           <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }}/>
           <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} options={{ headerShown: false }} />
           <Stack.Screen name="Berita" component={BeritaScreen} options={{ headerShown: false }} />
           <Stack.Screen name="UMKM" component={UMKMScreen} options={{ headerShown: false }} />
           <Stack.Screen name="PendaftaranUMKM" component={PendaftaranUMKMScreen} options={{ headerShown: false }} />

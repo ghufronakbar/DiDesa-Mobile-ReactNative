@@ -18,40 +18,38 @@ import buttonStyles from "Styles/buttonStyles";
 import inputStyles from "Styles/inputStyles";
 import textStyles from "Styles/textStyles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getLinkForgotPassword } from "Services/profile";
 
-const LoginScreen = ({ navigation }: { navigation: any }) => {
-  const [nik, setNik] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+const ForgotPasswordScreen = ({ navigation }: { navigation: any }) => {
+  const [nik, setNik] = useState<string>("");  
   const [message, setMessage] = useState<string>("");
   const [isToastOpen, setIsToastOpen] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const handleLogin = async () => {
-    if (!nik || !password) {
-      setMessage("NIK dan password harus diisi");
+  const handleForgotPassword = async () => {
+    if (!nik) {
+      setMessage("NIK harus diisi");
       setIsError(true);
       setIsToastOpen(true);
       return;
     }
     setIsLoading(true);
     try {
-      const response = await login(nik, password);
+      const response = await getLinkForgotPassword(nik);
       setIsLoading(false);
       setIsError(false);
       setIsToastOpen(true);
-      setMessage(response.message);
-      await AsyncStorage.setItem("token", response.token);
+      setMessage(response.message);      
       setTimeout(() => {
-        navigation.navigate("Home");
+        navigation.navigate("Login");
       }, 2000);
     } catch (error) {
-      console.log(error);
       const apiError = error as ApiError;
       setIsLoading(false);
       setIsError(true);
       setIsToastOpen(true);
-      setMessage(apiError?.response?.data?.message || "Gagal login");
+      setMessage(apiError?.response?.data?.message || "Gagal mengirim link verifikasi");
     }
   };
 
@@ -66,8 +64,8 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
       )}
       {isLoading && <SpinnerLoading />}
       <ScrollView style={{ alignSelf: "center", paddingTop: 100 }}>
-        <View style={{ gap: 16, marginBottom: 68 }}>
-          <Text style={textStyles.heading}>Selamat Datang ke</Text>
+        <View style={{ gap: 16, marginBottom: 32 }}>
+          <Text style={textStyles.heading}>Lupa Password</Text>
           <Text style={{ color: color.primary, fontWeight: 800, fontSize: 50 }}>
             DiDesa
           </Text>
@@ -86,39 +84,13 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
             keyboardType="number-pad"
           />
         </View>
-        <View style={inputStyles.inputContainer}>
-          <Text style={inputStyles.label}>Password</Text>
-          <TextInput
-            style={inputStyles.input}
-            placeholder="Masukkan password anda"
-            placeholderTextColor={color.gray}
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-          />
-        </View>
-        <View
-          style={{
-            alignItems: "center",
-            justifyContent: "flex-end",
-            flexDirection: "row",
-            gap: 10,
-            marginTop: 16,
-          }}
-        >
           <TouchableOpacity
-            style={[buttonStyles.primaryOutline, { flex: 1 }]}
-            onPress={()=>{navigation.navigate("ForgotPassword")}}
+            style={[buttonStyles.primary, { flex: 1, width: "45%", alignSelf: "center", marginTop: 32 }]}
+            onPress={handleForgotPassword}
           >
-            <Text style={buttonStyles.textOutlinePrimary}>Lupa Password</Text>
+            <Text style={buttonStyles.textPrimary}>Kirim Verifikasi</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={[buttonStyles.primary, { flex: 1 }]}
-            onPress={handleLogin}
-          >
-            <Text style={buttonStyles.textPrimary}>Login</Text>
-          </TouchableOpacity>
-        </View>
+        
       </ScrollView>
     </SafeAreaView>
   );
@@ -134,4 +106,4 @@ const containerStyles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default ForgotPasswordScreen;
