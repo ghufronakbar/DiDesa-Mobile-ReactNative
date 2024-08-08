@@ -4,7 +4,7 @@ import { getInfo, getProfile } from "Services/homepage";
 import textStyles from "Styles/textStyles";
 import { useFocusEffect } from "@react-navigation/native";
 
-const WelcomeMessage = () => {  
+const WelcomeMessage = () => {
   const [name, setName] = useState<string>("");
   const date = new Date();
   const hours = date.getHours();
@@ -20,23 +20,22 @@ const WelcomeMessage = () => {
   }
   const fetchData = async () => {
     try {
-      const { isLoggedIn, name } = await getInfo()
-      setName(name||"Guest");
+      const { isLoggedIn, name } = await getInfo();
+      setName(name || "Guest");
       return { isLoggedIn, name };
     } catch (error) {}
   };
-  
 
   useFocusEffect(
     useCallback(() => {
       fetchData();
     }, [name])
-  );  
+  );
 
   return (
     <View style={{ gap: 4 }}>
       <Text style={textStyles.heading}>Selamat {time},</Text>
-      <Text style={textStyles.heading}>{name }</Text>
+      <Text style={textStyles.heading}>{name}</Text>
     </View>
   );
 };
